@@ -95,8 +95,6 @@ private fun loadRawWords(): Map<String, String> {
     return stringMap
 }
 private fun loadProcessedWords(): MutableMap<String, MutableList<String>> {
-    var stringMap: MutableMap<String, MutableList<String>> = mutableMapOf()
-
     // Read the JSON string from the file
     val jsonString = File(OUTPUT_WORDS_DICTIONARY_FILE_PATH).readText(Charsets.UTF_8)
 
@@ -104,7 +102,7 @@ private fun loadProcessedWords(): MutableMap<String, MutableList<String>> {
     val type = object : TypeToken<MutableMap<String, MutableList<String>>>() {}.type
 
     // Deserialize the JSON string back into a Map
-    stringMap = Gson().fromJson(jsonString, type)
+    val stringMap: MutableMap<String, MutableList<String>> = Gson().fromJson(jsonString, type)
 
     return stringMap
 }
