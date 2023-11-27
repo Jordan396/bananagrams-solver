@@ -68,4 +68,8 @@ class Pile(gameMode: GameMode, tilePileConfig: Map<Char, Int> = DEFAULT_TILE_PIL
 
         return drawnTiles
     }
+
+    fun add(tiles: MutableList<Char>){
+        this.tilePile.addAll(tiles)
+    }
 }

@@ -34,4 +34,15 @@ class PileTest {
         }
         assertEquals("Player must draw 1 or more tiles!", exception.message)
     }
+
+    @Test
+    fun `add tiles to existing pile`() {
+        val tilePileConfig = mapOf('a' to 3, 'b' to 2)
+        val pile = Pile(GameMode.COMPUTER, tilePileConfig)
+        val tilesToAdd : MutableList<Char> = mutableListOf()
+        tilesToAdd.add('c')
+        tilesToAdd.add('d')
+        pile.add(tilesToAdd)
+        assertEquals(7, pile.getPileSize())
+    }
 }
