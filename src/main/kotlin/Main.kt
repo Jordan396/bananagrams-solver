@@ -108,9 +108,8 @@ private fun loadRawWords(): Map<String, String> {
 
     // Use TypeToken to get the correct type for Gson
     val type = object : TypeToken<Map<String, String>>() {}.type
-    val stringMap: Map<String, String> = gson.fromJson(json, type)
 
-    return stringMap
+    return gson.fromJson(json, type)
 }
 private fun loadProcessedWords(): MutableMap<String, MutableList<String>> {
     // Read the JSON string from the file
@@ -120,7 +119,5 @@ private fun loadProcessedWords(): MutableMap<String, MutableList<String>> {
     val type = object : TypeToken<MutableMap<String, MutableList<String>>>() {}.type
 
     // Deserialize the JSON string back into a Map
-    val stringMap: MutableMap<String, MutableList<String>> = Gson().fromJson(jsonString, type)
-
-    return stringMap
+    return Gson().fromJson(jsonString, type)
 }
