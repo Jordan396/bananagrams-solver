@@ -93,9 +93,9 @@ private fun start(gameMode: GameMode) {
     println("======================================================")
 
     // Initialise game state
-    val board: Board = Board()
-    val commonPile: Pile = Pile(gameMode)
-    val playerPile: Pile = Pile(gameMode, mapOf())
+    val board = Board()
+    val commonPile = Pile(gameMode)
+    val playerPile = Pile(gameMode, mapOf())
 
     println("How many tiles to draw at the start of the game?")
     val tilesDrawnOnFirstDraw = commonPile.draw(readUserInputInteger() ?: DEFAULT_NUMBER_OF_TILES_FIRST_DRAW)
