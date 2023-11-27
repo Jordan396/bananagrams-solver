@@ -2,6 +2,10 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonSyntaxException
 import com.google.gson.reflect.TypeToken
+import model.Board
+import model.GameMode
+import model.Pile
+import utils.readUserInputInteger
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.IOException
@@ -9,6 +13,10 @@ import java.util.Scanner
 
 private const val INPUT_WORDS_DICTIONARY_FILE_PATH = "resources/words_dictionary.json"
 private const val OUTPUT_WORDS_DICTIONARY_FILE_PATH = "resources/processed_words_dictionary.json"
+private const val DEFAULT_NUMBER_OF_TILES_FIRST_DRAW = 21
+
+// Global variables
+var processedWordMap: MutableMap<String, MutableList<String>> = mutableMapOf()
 
 fun main() {
     val scanner = Scanner(System.`in`)
@@ -17,15 +25,17 @@ fun main() {
     println("Welcome to the bananagrams solver! 🍌")
     println("Please select an option: ")
     println("1. Prepare data")
-    println("2. Start the game!")
-    println("3. Exit")
+    println("2. Play against computer! 💻")
+    println("3. Play against player! 🙍‍")
+    println("4. Exit")
 
-    print("Enter your choice (1-3): ")
+    print("Enter your choice (1-4): ")
 
     when (scanner.nextInt()) {
         1 -> prepare()
-        2 -> start()
-        3 -> println("Exiting...")
+        2 -> start(GameMode.COMPUTER)
+        3 -> start(GameMode.PLAYER)
+        4 -> println("Exiting...")
         else -> println("Invalid option selected.")
     }
     return
@@ -64,11 +74,8 @@ private fun prepare() {
     }
 }
 
-private fun start() {
-    println("Starting the game...")
-
+private fun start(gameMode: GameMode) {
     println("Loading processed words...")
-    var processedWordMap: MutableMap<String, MutableList<String>> = mutableMapOf()
     try {
         processedWordMap = loadProcessedWords()
     } catch (e: FileNotFoundException) {
@@ -81,7 +88,18 @@ private fun start() {
     }
     println("Processed words loaded!")
 
+    println("======================================================")
+    println("================== GAME IS STARTING ==================")
+    println("======================================================")
 
+    // Initialise game state
+    val board: Board = Board()
+    val commonPile: Pile = Pile(gameMode)
+    val playerPile: Pile = Pile(gameMode, mapOf())
+
+    println("How many tiles to draw at the start of the game?")
+    val tilesDrawnOnFirstDraw = commonPile.draw(readUserInputInteger() ?: DEFAULT_NUMBER_OF_TILES_FIRST_DRAW)
+    playerPile.add(tilesDrawnOnFirstDraw)
 }
 
 private fun loadRawWords(): Map<String, String> {
