@@ -21,3 +21,15 @@ graph LR;
     given_word-->possible_word_3[silent]
     given_word-->possible_word_4[tinsel]
 ```
+
+Data structure would be: 
+```json
+{ 
+  "eilnst": [
+    "listen",
+    "enlist",
+    "silent",
+    "tinsel"
+  ]
+}
+``` 
