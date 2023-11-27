@@ -1,0 +1,1 @@
+`words_dictionary.json` was taken from https://github.com/dwyl/english-words.
