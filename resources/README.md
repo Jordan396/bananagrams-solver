@@ -1,1 +1,1 @@
-`words_dictionary.json` was taken from https://github.com/dwyl/english-words.
+1. Download `words_dictionary.json` from https://github.com/dwyl/english-words and place it in this folder.
