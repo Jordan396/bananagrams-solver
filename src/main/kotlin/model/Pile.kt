@@ -77,4 +77,8 @@ class Pile(gameMode: GameMode, tilePileConfig: Map<Char, Int> = DEFAULT_TILE_PIL
         val result = this.tilePile.joinToString(separator = ", ")
         println("Here are your letters: $result")
     }
+
+    fun sortThenCombine(): String {
+        return this.tilePile.toCharArray().sorted().joinToString("")
+    }
 }

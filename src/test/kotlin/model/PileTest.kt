@@ -45,4 +45,17 @@ class PileTest {
         pile.add(tilesToAdd)
         assertEquals(7, pile.getPileSize())
     }
+
+    @Test
+    fun `sortThenCombine sorts the tiles in ascending order`() {
+        // arrange
+        val tilePileConfig = mapOf('z' to 3, 'a' to 2)
+        val pile = Pile(GameMode.COMPUTER, tilePileConfig)
+
+        // act
+        val result = pile.sortThenCombine()
+
+        // assert
+        assertEquals("aazzz", result)
+    }
 }
