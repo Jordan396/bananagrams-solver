@@ -100,6 +100,8 @@ private fun start(gameMode: GameMode) {
     println("How many tiles to draw at the start of the game?")
     val tilesDrawnOnFirstDraw = commonPile.draw(readUserInputInteger() ?: DEFAULT_NUMBER_OF_TILES_FIRST_DRAW)
     playerPile.add(tilesDrawnOnFirstDraw)
+    playerPile.print()
+
 }
 
 private fun loadRawWords(): Map<String, String> {

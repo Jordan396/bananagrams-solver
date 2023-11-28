@@ -72,4 +72,9 @@ class Pile(gameMode: GameMode, tilePileConfig: Map<Char, Int> = DEFAULT_TILE_PIL
     fun add(tiles: MutableList<Char>){
         this.tilePile.addAll(tiles)
     }
+
+    fun print(){
+        val result = this.tilePile.joinToString(separator = ", ")
+        println("Here are your letters: $result")
+    }
 }
