@@ -11,3 +11,10 @@ fun readUserInputInteger(): Int? {
     }
     return null
 }
+
+fun removeCharAtIndex(str: String, index: Int): String {
+    if (index < 0 || index >= str.length) {
+        throw IllegalArgumentException("Index out of bounds")
+    }
+    return str.substring(0, index) + str.substring(index + 1, str.length)
+}
