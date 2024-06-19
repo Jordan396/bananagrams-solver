@@ -88,7 +88,7 @@ private fun start(gameMode: GameMode) {
 
     // test
     println(playerPile.sortThenCombine())
-    val (longestWord, remainingTiles) = algorithms.findLongestWord(wordMap, playerPile.sortThenCombine(), mutableListOf())
+    val (longestWord, remainingTiles) = algorithms.findLongestWord(wordMap, playerPile.sortThenCombine())
     println("longest word formed is $longestWord")
 }
 

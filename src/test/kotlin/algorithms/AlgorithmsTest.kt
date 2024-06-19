@@ -1,7 +1,7 @@
 package algorithms
 
-import words.ProcessedWordMap
 import org.junit.jupiter.api.Test
+import words.ProcessedWordMap
 import words.TestProcessedWordLoader
 import kotlin.test.assertEquals
 
@@ -16,13 +16,31 @@ class AlgorithmsTest {
     )
     private val wordMap = ProcessedWordMap(TestProcessedWordLoader(testWordMap));
 
-//    @Test
-//    fun `findLongestWord should find the longest word`() {
-//    }
+    @Test
+    fun `findLongestWord should return the first item in the word map that matches input exactly`() {
+        val (longestWord, remainingTiles) = algorithms.findLongestWord(wordMap, "eilnst")
+        assertEquals(longestWord, "listen")
+        assertEquals(remainingTiles.size, 0)
+    }
+
+    @Test
+    fun `findLongestWord should return the first item in the word map that matches input`() {
+        val (longestWord, remainingTiles) = algorithms.findLongestWord(wordMap, "eilnstv")
+        assertEquals(longestWord, "listen")
+        assertEquals(remainingTiles, mutableListOf('v'))
+    }
 
     @Test
     fun `findLongestWord should return empty string if input is empty`() {
-        val (longestWord, remainingTiles) = algorithms.findLongestWord(wordMap, "", mutableListOf())
+        val (longestWord, remainingTiles) = algorithms.findLongestWord(wordMap, "")
         assertEquals(longestWord, null)
+        assertEquals(remainingTiles.size, 0)
+    }
+
+    @Test
+    fun `findLongestWord should return empty string if no matching words`() {
+        val (longestWord, remainingTiles) = algorithms.findLongestWord(wordMap, "lnst")
+        assertEquals(longestWord, null)
+        assertEquals(remainingTiles, mutableListOf('l', 'n', 's', 't'))
     }
 }
