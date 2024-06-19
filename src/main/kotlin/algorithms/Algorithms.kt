@@ -1,18 +1,18 @@
 package algorithms
 
-import objects.ProcessedWordMap
+import words.ProcessedWordMap
 
-fun findLongestWord(input: String, unusedTiles: MutableList<Char>): Pair<String?, MutableList<Char>> {
+fun findLongestWord(wordMap: ProcessedWordMap, input: String, unusedTiles: MutableList<Char>): Pair<String?, MutableList<Char>> {
     if (input.isEmpty())
         return Pair(null, unusedTiles)
 
-    if (ProcessedWordMap.processedWordMap().containsKey(input)){
-        return Pair(ProcessedWordMap.processedWordMap[input]?.get(0), unusedTiles)
+    if (wordMap.processedWordMap().containsKey(input)){
+        return Pair(wordMap.processedWordMap()[input]?.get(0), unusedTiles)
     } else {
-        for (i in 0 until input.length){
+        for (i in input.indices){
             val newString = utils.removeCharAtIndex(input, i)
             unusedTiles.add(input[i])
-            findLongestWord(newString, unusedTiles)
+            findLongestWord(wordMap, newString, unusedTiles)
         }
     }
 

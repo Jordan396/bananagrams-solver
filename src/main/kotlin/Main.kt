@@ -2,10 +2,13 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonSyntaxException
 import com.google.gson.reflect.TypeToken
+import constants.OUTPUT_WORDS_DICTIONARY_FILE_PATH
 import model.Board
 import model.GameMode
 import model.Pile
 import utils.readUserInputInteger
+import words.FileProcessedWordLoader
+import words.ProcessedWordMap
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.IOException
@@ -76,6 +79,7 @@ private fun start(gameMode: GameMode) {
     val board = Board()
     val commonPile = Pile(gameMode)
     val playerPile = Pile(gameMode, mapOf())
+    val wordMap = ProcessedWordMap(FileProcessedWordLoader(OUTPUT_WORDS_DICTIONARY_FILE_PATH));
 
     println("How many tiles to draw at the start of the game?")
     val tilesDrawnOnFirstDraw = commonPile.draw(readUserInputInteger() ?: constants.DEFAULT_NUMBER_OF_TILES_FIRST_DRAW)
@@ -84,7 +88,7 @@ private fun start(gameMode: GameMode) {
 
     // test
     println(playerPile.sortThenCombine())
-    val (longestWord, remainingTiles) = algorithms.findLongestWord(playerPile.sortThenCombine(), mutableListOf())
+    val (longestWord, remainingTiles) = algorithms.findLongestWord(wordMap, playerPile.sortThenCombine(), mutableListOf())
     println("longest word formed is $longestWord")
 }
 
