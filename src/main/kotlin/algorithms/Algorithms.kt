@@ -7,10 +7,12 @@ fun findLongestWord(wordMap: ProcessedWordMap, input: String): Pair<String?, Mut
     if (input.isEmpty())
         return Pair(null, mutableListOf())
 
-    val queue: Queue<Pair<String, MutableList<Char>>> = LinkedList()
-
     // initialise with base word
+    val queue: Queue<Pair<String, MutableList<Char>>> = LinkedList()
     queue.add(Pair(input, mutableListOf()))
+
+    // optimisation, track all processed strings
+    val set: MutableSet<String> = mutableSetOf(input)
 
     // attempt to form the longest word
     while (!queue.isEmpty()){
@@ -26,9 +28,14 @@ fun findLongestWord(wordMap: ProcessedWordMap, input: String): Pair<String?, Mut
         } else {
             for (i in current.first.indices){
                 val newString = utils.removeCharAtIndex(current.first, i)
-                val newUnusedTiles = current.second.toMutableList()
-                newUnusedTiles.add(current.first[i])
-                queue.add(Pair(newString, newUnusedTiles))
+                if (!set.contains(newString)){
+                    val newString = utils.removeCharAtIndex(current.first, i)
+                    val newUnusedTiles = current.second.toMutableList()
+                    newUnusedTiles.add(current.first[i])
+                    queue.add(Pair(newString, newUnusedTiles))
+                    set.add(newString)
+                }
+
             }
         }
     }
