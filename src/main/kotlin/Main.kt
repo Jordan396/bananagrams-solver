@@ -3,9 +3,9 @@ import com.google.gson.GsonBuilder
 import com.google.gson.JsonSyntaxException
 import com.google.gson.reflect.TypeToken
 import constants.OUTPUT_WORDS_DICTIONARY_FILE_PATH
-import model.Board
-import model.GameMode
-import model.Pile
+import models.board.Board
+import models.GameMode
+import models.pile.Pile
 import utils.readUserInputInteger
 import words.FileProcessedWordLoader
 import words.ProcessedWordMap
@@ -76,7 +76,7 @@ private fun start(gameMode: GameMode) {
     println("======================================================")
 
     // Initialise game state
-    val board = Board()
+    val board = Board
     val commonPile = Pile(gameMode)
     val playerPile = Pile(gameMode, mapOf())
     val wordMap = ProcessedWordMap(FileProcessedWordLoader(OUTPUT_WORDS_DICTIONARY_FILE_PATH));
