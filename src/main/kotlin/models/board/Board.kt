@@ -58,6 +58,7 @@ object Board {
                     row++;
                 }
             }
+            this.board = boardCopy
             return unusedTiles
         } catch (e: Exception) {
             println("Error: Failed to add word - ${e.message}")
@@ -118,6 +119,8 @@ object Board {
         if (board.containsKey(row) && board[row]!!.containsKey(col)) {
             throw Error("The tile ${board[row]?.get(col)} already exists at [${row}, ${col}].")
         }
+
+        if (!board.containsKey(row)) board[row] = mutableMapOf()
         board[row]?.set(col, char)
         return board
     }
