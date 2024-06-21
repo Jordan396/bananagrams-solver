@@ -116,7 +116,7 @@ class Board {
         for (i in 0..rightMostCol - leftMostCol + 2) {
             print('-')
         }
-
+        println()
     }
 
     fun reset() {

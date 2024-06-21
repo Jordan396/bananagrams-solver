@@ -86,10 +86,19 @@ private fun start(gameMode: GameMode) {
     playerPile.add(tilesDrawnOnFirstDraw)
     playerPile.print()
 
-    // test
-    println(playerPile.sortThenCombine())
+    // initial move, just find the longest word and put it on the board
     val longestWord = algorithms.findLongestWord(wordMap, playerPile.sortThenCombine())
-    println("longest word formed is $longestWord")
+    board.add(longestWord, longestWord.toMutableList())
+    playerPile.remove(longestWord.toMutableList())
+    board.print()
+    playerPile.print()
+
+//    // keep playing...
+//    while (true) {
+//        val longestWord = algorithms.findLongestWord(wordMap, playerPile.sortThenCombine())
+//        println("longest word formed is $longestWord")
+//        playerPile.remove(longestWord.toMutableList())
+//    }
 }
 
 private fun loadRawWords(): Map<String, String> {

@@ -35,7 +35,7 @@ class BoardTest {
             assertEquals(
                 "_______\n" +
                         "|hello|\n" +
-                        "-------", outContent.toString()
+                        "-------\n", outContent.toString()
             )
         }
 
@@ -54,7 +54,7 @@ class BoardTest {
                         "|m    |\n" +
                         "|a    |\n" +
                         "|n    |\n" +
-                        "-------", outContent.toString()
+                        "-------\n", outContent.toString()
             )
         }
 
@@ -73,7 +73,7 @@ class BoardTest {
                         "|hello|\n" +
                         "|  o  |\n" +
                         "|  n  |\n" +
-                        "-------", outContent.toString()
+                        "-------\n", outContent.toString()
             )
         }
 
@@ -92,7 +92,7 @@ class BoardTest {
                         "|    l|\n" +
                         "|    l|\n" +
                         "|hello|\n" +
-                        "-------", outContent.toString()
+                        "-------\n", outContent.toString()
             )
         }
 
@@ -170,7 +170,7 @@ class BoardTest {
                 assertEquals(
                     "_______\n" +
                             "|hello|\n" +
-                            "-------", outContent.toString()
+                            "-------\n", outContent.toString()
                 )
             }
 
@@ -191,7 +191,7 @@ class BoardTest {
                 assertEquals(
                     "_______\n" +
                             "|hello|\n" +
-                            "-------", outContent.toString()
+                            "-------\n", outContent.toString()
                 )
             }
         }
