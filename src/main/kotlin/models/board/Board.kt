@@ -7,7 +7,7 @@ enum class Direction {
     LEFT_RIGHT, UP_DOWN
 }
 
-object Board {
+class Board {
     private var board: MutableMap<Int, MutableMap<Int, Char>>
 
     init {
@@ -16,54 +16,67 @@ object Board {
 
     fun add(
         word: String,
+        tiles: MutableList<Char>,
         direction: Direction = Direction.LEFT_RIGHT,
         position: Pair<Int, Int> = Pair(0, 0)
-    ): MutableList<Char> {
-        if (this.board.isEmpty()) {
-            this.board[0] = mutableMapOf()
-            var col = 0
-            for (char in word) {
-                this.board = this.insertCharAt(this.board,0, col, char)
-                col++;
-            }
-            return mutableListOf()
-        }
-
+    ) {
         var boardCopy = this.createCopyOfBoard()
-        val unusedTiles: MutableList<Char> = mutableListOf()
+
         try {
-            var col = position.second
-            var row = position.first
-            for (char in word) {
-                if (charExistsAt(boardCopy, row, col)) {
-                    if (getCharAt(boardCopy, row, col) == char) {
-                        unusedTiles.add(char)
+            if (boardCopy.isEmpty()) {
+                boardCopy[0] = mutableMapOf()
+                var col = 0
+                for (char in word) {
+                    if (tiles.remove(char)) {
+                        boardCopy = this.insertCharAt(this.board, 0, col, char)
+                        col++;
                     } else {
-                        throw Exception(
-                            "Cannot add '${char}' to [[${row}, ${col}]] as it is occupied by tile '${
-                                getCharAt(
-                                    boardCopy,
-                                    row,
-                                    col
-                                )
-                            }'."
-                        )
+                        throw Exception("Cannot place tile '${char}' at [${0}, ${col}] as the tile is not available.")
                     }
-                } else {
-                    boardCopy = insertCharAt(boardCopy, row, col, char)
                 }
-                if (direction == Direction.LEFT_RIGHT) {
-                    col++;
-                } else {
-                    row++;
+                return
+            } else {
+                var col = position.second
+                var row = position.first
+                for (char in word) {
+                    if (charExistsAt(boardCopy, row, col)) {
+                        if (getCharAt(boardCopy, row, col) != char) {
+                            throw Exception(
+                                "Expected tile '${char}' to be at [[${row}, ${col}]] but is instead occupied by tile '${
+                                    getCharAt(
+                                        boardCopy,
+                                        row,
+                                        col
+                                    )
+                                }'."
+                            )
+                        }
+                    } else {
+                        if (tiles.remove(char)) {
+                            boardCopy = insertCharAt(boardCopy, row, col, char)
+                        } else {
+                            throw Exception("Cannot place tile '${char}' at [${0}, ${col}] as the tile is not available.")
+                        }
+                    }
+                    if (direction == Direction.LEFT_RIGHT) {
+                        col++;
+                    } else {
+                        row++;
+                    }
                 }
             }
-            this.board = boardCopy
-            return unusedTiles
+
+            // after adding, check if there are unused tiles
+            if (tiles.isEmpty()){
+                this.board = boardCopy
+                return
+            } else {
+                throw Exception("After forming the word ${word}, there are some unused tiles remaining.")
+            }
         } catch (e: Exception) {
             println("Error: Failed to add word - ${e.message}")
         }
-        return mutableListOf()
+        return
     }
 
     fun print() {
@@ -115,7 +128,12 @@ object Board {
         return false
     }
 
-    private fun insertCharAt(board: MutableMap<Int, MutableMap<Int, Char>>, row: Int, col: Int, char: Char): MutableMap<Int, MutableMap<Int, Char>> {
+    private fun insertCharAt(
+        board: MutableMap<Int, MutableMap<Int, Char>>,
+        row: Int,
+        col: Int,
+        char: Char
+    ): MutableMap<Int, MutableMap<Int, Char>> {
         if (board.containsKey(row) && board[row]!!.containsKey(col)) {
             throw Error("The tile ${board[row]?.get(col)} already exists at [${row}, ${col}].")
         }

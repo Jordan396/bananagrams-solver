@@ -28,8 +28,8 @@ class BoardTest {
     inner class Add {
         @Test
         fun `should add a word to the board when board is empty`() {
-            val board = Board
-            board.add("hello")
+            val board = Board()
+            board.add("hello", mutableListOf('h', 'e', 'l', 'l', 'o'))
             board.print()
 
             assertEquals(
@@ -42,9 +42,9 @@ class BoardTest {
         @Test
         fun `should successfully add a word to the board in the UP-DOWN position if word is in a viable position (start)`(
         ) {
-            val board = Board
-            board.add("hello")
-            board.add("human", Direction.UP_DOWN, Pair(0, 0))
+            val board = Board()
+            board.add("hello", mutableListOf('h', 'e', 'l', 'l', 'o'))
+            board.add("human", mutableListOf('u', 'm', 'a', 'n'), Direction.UP_DOWN, Pair(0, 0))
             board.print()
 
             assertEquals(
@@ -61,9 +61,9 @@ class BoardTest {
         @Test
         fun `should successfully add a word to the board in the UP-DOWN position if word is in a viable position (middle)`(
         ) {
-            val board = Board
-            board.add("hello")
-            board.add("melon", Direction.UP_DOWN, Pair(-2, 2))
+            val board = Board()
+            board.add("hello", mutableListOf('h', 'e', 'l', 'l', 'o'))
+            board.add("melon", mutableListOf('m', 'e', 'o', 'n'), Direction.UP_DOWN, Pair(-2, 2))
             board.print()
 
             assertEquals(
@@ -80,9 +80,9 @@ class BoardTest {
         @Test
         fun `should successfully add a word to the board in the UP-DOWN position if word is in a viable position (end)`(
         ) {
-            val board = Board
-            board.add("hello")
-            board.add("cello", Direction.UP_DOWN, Pair(-4, 4))
+            val board = Board()
+            board.add("hello", mutableListOf('h', 'e', 'l', 'l', 'o'))
+            board.add("cello", mutableListOf('c', 'e', 'l', 'l'), Direction.UP_DOWN, Pair(-4, 4))
             board.print()
 
             assertEquals(
@@ -100,8 +100,8 @@ class BoardTest {
     @DisplayName("reset")
     @Test
     fun `should reset the board`() {
-        val board: Board = Board
-        board.add("hello")
+        val board: Board = Board()
+        board.add("hello", mutableListOf('h', 'e', 'l', 'l', 'o'))
         board.reset()
         board.print()
 

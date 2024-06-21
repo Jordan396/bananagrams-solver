@@ -76,7 +76,7 @@ private fun start(gameMode: GameMode) {
     println("======================================================")
 
     // Initialise game state
-    val board = Board
+    val board = Board()
     val commonPile = Pile(gameMode)
     val playerPile = Pile(gameMode, mapOf())
     val wordMap = ProcessedWordMap(FileProcessedWordLoader(OUTPUT_WORDS_DICTIONARY_FILE_PATH));
