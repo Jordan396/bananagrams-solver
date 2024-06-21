@@ -88,8 +88,8 @@ private fun start(gameMode: GameMode) {
 
     // initial move, just find the longest word and put it on the board
     val longestWord = algorithms.findLongestWord(wordMap, playerPile.sortThenCombine())
-    board.add(longestWord, longestWord.toMutableList())
-    playerPile.remove(longestWord.toMutableList())
+    board.add(longestWord.first, longestWord.first.toMutableList())
+    playerPile.remove(longestWord.first.toMutableList())
     board.print()
     playerPile.print()
 

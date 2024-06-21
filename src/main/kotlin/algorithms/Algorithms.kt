@@ -3,9 +3,9 @@ package algorithms
 import words.ProcessedWordMap
 import java.util.*
 
-fun findLongestWord(wordMap: ProcessedWordMap, input: String): String {
+fun findLongestWord(wordMap: ProcessedWordMap, input: String): Pair<String, Int> {
     if (input.isEmpty())
-        return ""
+        return Pair("", 0)
 
     // initialise with base word
     val queue: Queue<String> = LinkedList()
@@ -20,11 +20,11 @@ fun findLongestWord(wordMap: ProcessedWordMap, input: String): String {
         queue.remove()
 
         if (current.isEmpty()){
-            return ""
+            return Pair("", 0)
         }
 
         if (wordMap.processedWordMap().containsKey(current)){
-            return wordMap.processedWordMap()[current]?.get(0)!!
+            return Pair(wordMap.processedWordMap()[current]?.get(0)!!, 0)
         } else {
             for (i in current.indices){
                 val newString = utils.removeCharAtIndex(current, i)
@@ -36,6 +36,5 @@ fun findLongestWord(wordMap: ProcessedWordMap, input: String): String {
         }
     }
 
-
-    return ""
+    return Pair("", 0)
 }
