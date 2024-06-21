@@ -40,7 +40,7 @@ class BoardTest {
         }
 
         @Test
-        fun `should successfully add a word to the board in the UP-DOWN position if word is to be added in a viable position`(
+        fun `should successfully add a word to the board in the UP-DOWN position if word is in a viable position (start)`(
         ) {
             val board = Board
             board.add("hello")
@@ -54,6 +54,44 @@ class BoardTest {
                         "|m    |\n" +
                         "|a    |\n" +
                         "|n    |\n" +
+                        "-------", outContent.toString()
+            )
+        }
+
+        @Test
+        fun `should successfully add a word to the board in the UP-DOWN position if word is in a viable position (middle)`(
+        ) {
+            val board = Board
+            board.add("hello")
+            board.add("melon", Direction.UP_DOWN, Pair(-2, 2))
+            board.print()
+
+            assertEquals(
+                "_______\n" +
+                        "|  m  |\n" +
+                        "|  e  |\n" +
+                        "|hello|\n" +
+                        "|  o  |\n" +
+                        "|  n  |\n" +
+                        "-------", outContent.toString()
+            )
+        }
+
+        @Test
+        fun `should successfully add a word to the board in the UP-DOWN position if word is in a viable position (end)`(
+        ) {
+            val board = Board
+            board.add("hello")
+            board.add("cello", Direction.UP_DOWN, Pair(-4, 4))
+            board.print()
+
+            assertEquals(
+                "_______\n" +
+                        "|    c|\n" +
+                        "|    e|\n" +
+                        "|    l|\n" +
+                        "|    l|\n" +
+                        "|hello|\n" +
                         "-------", outContent.toString()
             )
         }
