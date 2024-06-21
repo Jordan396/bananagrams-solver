@@ -81,7 +81,7 @@ class AlgorithmsTest {
             @Test
             fun `given input can be found in word map, should return the first item in the word map that satisfies the conditions`() {
                 val wordMap = ProcessedWordMap(TestProcessedWordLoader(testWordMap));
-                val longestWord = findLongestWord(wordMap, "eilnst", mutableListOf(Pair(0, 'i'), Pair(1, 'l')))
+                val longestWord = findLongestWord(wordMap, "enst", mutableListOf(Pair(0, 'i'), Pair(1, 'l')))
                 assertEquals("silent", longestWord.first)
                 assertEquals(-1, longestWord.second)
             }
@@ -89,7 +89,7 @@ class AlgorithmsTest {
             @Test
             fun `given input cannot be found in word map, should return the first item in the word map that matches a substring of input and satisfies the conditions`() {
                 val wordMap = ProcessedWordMap(TestProcessedWordLoader(testWordMap));
-                val longestWord = findLongestWord(wordMap, "eilnst", mutableListOf(Pair(0, 's'), Pair(1, 'l')))
+                val longestWord = findLongestWord(wordMap, "eilnt", mutableListOf(Pair(0, 's'), Pair(1, 'l')))
                 assertEquals("slit", longestWord.first)
                 assertEquals(0, longestWord.second)
             }
@@ -97,7 +97,7 @@ class AlgorithmsTest {
             @Test
             fun `given there are no suitable strings that can be formed, should return `() {
                 val wordMap = ProcessedWordMap(TestProcessedWordLoader(testWordMap));
-                val longestWord = findLongestWord(wordMap, "eilnst", mutableListOf(Pair(0, 's'), Pair(1, 'o')))
+                val longestWord = findLongestWord(wordMap, "eilnt", mutableListOf(Pair(0, 's'), Pair(1, 'o')))
                 assertEquals("", longestWord.first)
                 assertEquals(0, longestWord.second)
             }

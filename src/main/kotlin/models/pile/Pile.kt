@@ -65,7 +65,5 @@ class Pile(gameMode: GameMode, tilePileConfig: Map<Char, Int> = DEFAULT_TILE_PIL
         this.tilePile = tilePileCopy
     }
 
-    fun sortThenCombine(): String {
-        return this.tilePile.toCharArray().sorted().joinToString("")
-    }
+
 }

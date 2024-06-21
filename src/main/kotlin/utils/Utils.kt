@@ -18,3 +18,7 @@ fun removeCharAtIndex(str: String, index: Int): String {
     }
     return str.substring(0, index) + str.substring(index + 1, str.length)
 }
+
+fun sortThenCombine(chars: MutableList<Char>): String {
+    return chars.toCharArray().sorted().joinToString("")
+}

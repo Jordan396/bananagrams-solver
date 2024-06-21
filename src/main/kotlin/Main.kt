@@ -7,6 +7,7 @@ import models.board.Board
 import models.GameMode
 import models.pile.Pile
 import utils.readUserInputInteger
+import utils.sortThenCombine
 import words.FileProcessedWordLoader
 import words.ProcessedWordMap
 import java.io.File
@@ -87,7 +88,7 @@ private fun start(gameMode: GameMode) {
     playerPile.print()
 
     // initial move, just find the longest word and put it on the board
-    val longestWord = algorithms.findLongestWord(wordMap, playerPile.sortThenCombine())
+    val longestWord = algorithms.findLongestWord(wordMap, sortThenCombine(playerPile.get()))
     board.add(longestWord.first, longestWord.first.toMutableList())
     playerPile.remove(longestWord.first.toMutableList())
     board.print()
