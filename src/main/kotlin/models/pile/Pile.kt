@@ -2,7 +2,7 @@ package models.pile
 
 import constants.DEFAULT_TILE_PILE_CONFIG
 import models.GameMode
-import java.lang.Exception
+import kotlin.Exception
 import kotlin.random.Random
 
 class Pile(gameMode: GameMode, tilePileConfig: Map<Char, Int> = DEFAULT_TILE_PILE_CONFIG) {
@@ -16,6 +16,10 @@ class Pile(gameMode: GameMode, tilePileConfig: Map<Char, Int> = DEFAULT_TILE_PIL
 
     fun getPileSize(): Int {
         return this.tilePile.size
+    }
+
+    fun get(): MutableList<Char>{
+        return this.tilePile
     }
 
     fun draw(numberOfTilesToDraw: Int): MutableList<Char> {
@@ -49,6 +53,16 @@ class Pile(gameMode: GameMode, tilePileConfig: Map<Char, Int> = DEFAULT_TILE_PIL
     fun print(){
         val result = this.tilePile.joinToString(separator = ", ")
         println("Here are your letters: $result")
+    }
+
+    fun remove(tiles: MutableList<Char>){
+       val tilePileCopy = tilePile.toMutableList()
+        for (char in tiles){
+            if (!tilePileCopy.remove(char)){
+                throw Exception("Cannot remove tile '${char}' from tile pile as tile does not exist.")
+            }
+        }
+        this.tilePile = tilePileCopy
     }
 
     fun sortThenCombine(): String {

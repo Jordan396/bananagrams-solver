@@ -45,6 +45,19 @@ class PileTest {
         tilesToAdd.add('d')
         pile.add(tilesToAdd)
         assertEquals(7, pile.getPileSize())
+        assertEquals(pile.get(), mutableListOf('a','a','a','b','b','c','d'))
+    }
+
+    @Test
+    fun `remove tiles from existing pile`() {
+        val tilePileConfig = mapOf('a' to 3, 'b' to 2)
+        val pile = Pile(GameMode.COMPUTER, tilePileConfig)
+        val tilesToRemove : MutableList<Char> = mutableListOf()
+        tilesToRemove.add('a')
+        tilesToRemove.add('b')
+        pile.remove(tilesToRemove)
+        assertEquals(3, pile.getPileSize())
+        assertEquals(pile.get(), mutableListOf('a','a','b'))
     }
 
     @Test
