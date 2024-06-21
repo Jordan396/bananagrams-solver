@@ -30,6 +30,9 @@ class AlgorithmsTest {
             "enlist",
             "silent",
             "tinsel"
+        ),
+        "ilst" to mutableListOf(
+            "slit"
         )
     )
 
@@ -43,32 +46,32 @@ class AlgorithmsTest {
             fun `should return the first item in the word map that matches input exactly`() {
                 val wordMap = ProcessedWordMap(TestProcessedWordLoader(testWordMap));
                 val longestWord = findLongestWord(wordMap, "eilnst")
-                assertEquals(longestWord.first, "listen")
-                assertEquals(longestWord.second, 0)
+                assertEquals("listen", longestWord.first)
+                assertEquals(0, longestWord.second)
             }
 
             @Test
             fun `should return the first item in the word map that matches input`() {
                 val wordMap = ProcessedWordMap(TestProcessedWordLoader(testWordMap));
                 val longestWord = findLongestWord(wordMap, "eilnstv")
-                assertEquals(longestWord.first, "listen")
-                assertEquals(longestWord.second, 0)
+                assertEquals("listen", longestWord.first)
+                assertEquals(0, longestWord.second)
             }
 
             @Test
             fun `should return empty string if input is empty`() {
                 val wordMap = ProcessedWordMap(TestProcessedWordLoader(testWordMap));
                 val longestWord = findLongestWord(wordMap, "")
-                assertEquals(longestWord.first, "")
-                assertEquals(longestWord.second, 0)
+                assertEquals("", longestWord.first)
+                assertEquals(0, longestWord.second)
             }
 
             @Test
             fun `should return empty string if no matching words`() {
                 val wordMap = ProcessedWordMap(TestProcessedWordLoader(testWordMap));
                 val longestWord = findLongestWord(wordMap, "lnst")
-                assertEquals(longestWord.first, "")
-                assertEquals(longestWord.second, 0)
+                assertEquals("", longestWord.first)
+                assertEquals(0, longestWord.second)
             }
         }
 
@@ -76,11 +79,27 @@ class AlgorithmsTest {
         @DisplayName("with conditions")
         inner class FindLongestWordWithConditions {
             @Test
-            fun `should return the first item in the word map that matches input exactly and satisfies the conditions`() {
+            fun `given input can be found in word map, should return the first item in the word map that satisfies the conditions`() {
                 val wordMap = ProcessedWordMap(TestProcessedWordLoader(testWordMap));
-                val longestWord = findLongestWord(wordMap, "eilnst", mutableListOf(Pair(0, 'n'), Pair(3, 's')))
-                assertEquals(longestWord.first, "enlist")
-                assertEquals(longestWord.second, -1)
+                val longestWord = findLongestWord(wordMap, "eilnst", mutableListOf(Pair(0, 'i'), Pair(1, 'l')))
+                assertEquals("silent", longestWord.first)
+                assertEquals(-1, longestWord.second)
+            }
+
+            @Test
+            fun `given input cannot be found in word map, should return the first item in the word map that matches a substring of input and satisfies the conditions`() {
+                val wordMap = ProcessedWordMap(TestProcessedWordLoader(testWordMap));
+                val longestWord = findLongestWord(wordMap, "eilnst", mutableListOf(Pair(0, 's'), Pair(1, 'l')))
+                assertEquals("slit", longestWord.first)
+                assertEquals(0, longestWord.second)
+            }
+
+            @Test
+            fun `given there are no suitable strings that can be formed, should return `() {
+                val wordMap = ProcessedWordMap(TestProcessedWordLoader(testWordMap));
+                val longestWord = findLongestWord(wordMap, "eilnst", mutableListOf(Pair(0, 's'), Pair(1, 'o')))
+                assertEquals("", longestWord.first)
+                assertEquals(0, longestWord.second)
             }
         }
     }
