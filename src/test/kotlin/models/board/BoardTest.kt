@@ -95,6 +95,106 @@ class BoardTest {
                         "-------", outContent.toString()
             )
         }
+
+        @Nested
+        @DisplayName("exceptions")
+        inner class AddExceptions {
+            @Test
+            fun `should not add a word to board if board is empty and there are no tiles provided`(
+            ) {
+                val board = Board()
+                board.add("hello", mutableListOf())
+
+                assertEquals(
+                    "Error: Failed to add word - Cannot place tile 'h' at [0, 0] as the tile is not available.\n", outContent.toString()
+                )
+
+                outContent.reset()
+                board.print()
+
+                assertEquals(
+                    "The board is currently empty.\n", outContent.toString()
+                )
+            }
+
+            @Test
+            fun `should not add a word to board if board is empty and there are insufficient tiles provided`(
+            ) {
+                val board = Board()
+                board.add("hello", mutableListOf('h', 'e', 'l' , 'o'))
+
+                assertEquals(
+                    "Error: Failed to add word - Cannot place tile 'l' at [0, 3] as the tile is not available.\n", outContent.toString()
+                )
+
+                outContent.reset()
+                board.print()
+
+                assertEquals(
+                    "The board is currently empty.\n", outContent.toString()
+                )
+            }
+
+            @Test
+            fun `should not add a word to board if board is empty and there are excess tiles provided`(
+            ) {
+                val board = Board()
+                board.add("hello", mutableListOf('h', 'e', 'l', 'l' , 'o', 'w'))
+
+                assertEquals(
+                    "Error: Failed to add word - After forming the word 'hello', there are some unused tiles remaining.\n", outContent.toString()
+                )
+
+                outContent.reset()
+                board.print()
+
+                assertEquals(
+                    "The board is currently empty.\n", outContent.toString()
+                )
+            }
+
+            @Test
+            fun `should not add a word to board if board is not empty and there are insufficient tiles provided`(
+            ) {
+                val board = Board()
+                board.add("hello", mutableListOf('h', 'e', 'l' ,'l', 'o'))
+                board.add("cello", mutableListOf('c', 'e', 'l'), Direction.UP_DOWN, Pair(-4, 4))
+
+                assertEquals(
+                    "Error: Failed to add word - Cannot place tile 'l' at [-1, 4] as the tile is not available.\n", outContent.toString()
+                )
+
+                outContent.reset()
+                board.print()
+
+                assertEquals(
+                    "_______\n" +
+                            "|hello|\n" +
+                            "-------", outContent.toString()
+                )
+            }
+
+            @Test
+            fun `should not add a word to board if board is not empty and there are excess tiles provided`(
+            ) {
+                val board = Board()
+                board.add("hello", mutableListOf('h', 'e', 'l' ,'l', 'o'))
+                board.add("cello", mutableListOf('c', 'e', 'l', 'l', 'o'), Direction.UP_DOWN, Pair(-4, 4))
+
+                assertEquals(
+                    "Error: Failed to add word - After forming the word 'cello', there are some unused tiles remaining.\n", outContent.toString()
+                )
+
+                outContent.reset()
+                board.print()
+
+                assertEquals(
+                    "_______\n" +
+                            "|hello|\n" +
+                            "-------", outContent.toString()
+                )
+            }
+        }
     }
 
     @DisplayName("reset")

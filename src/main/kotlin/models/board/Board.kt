@@ -28,13 +28,12 @@ class Board {
                 var col = 0
                 for (char in word) {
                     if (tiles.remove(char)) {
-                        boardCopy = this.insertCharAt(this.board, 0, col, char)
+                        boardCopy = this.insertCharAt(boardCopy, 0, col, char)
                         col++;
                     } else {
                         throw Exception("Cannot place tile '${char}' at [${0}, ${col}] as the tile is not available.")
                     }
                 }
-                return
             } else {
                 var col = position.second
                 var row = position.first
@@ -55,7 +54,7 @@ class Board {
                         if (tiles.remove(char)) {
                             boardCopy = insertCharAt(boardCopy, row, col, char)
                         } else {
-                            throw Exception("Cannot place tile '${char}' at [${0}, ${col}] as the tile is not available.")
+                            throw Exception("Cannot place tile '${char}' at [${row}, ${col}] as the tile is not available.")
                         }
                     }
                     if (direction == Direction.LEFT_RIGHT) {
@@ -71,7 +70,7 @@ class Board {
                 this.board = boardCopy
                 return
             } else {
-                throw Exception("After forming the word ${word}, there are some unused tiles remaining.")
+                throw Exception("After forming the word '${word}', there are some unused tiles remaining.")
             }
         } catch (e: Exception) {
             println("Error: Failed to add word - ${e.message}")
