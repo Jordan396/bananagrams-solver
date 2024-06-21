@@ -75,7 +75,13 @@ class AlgorithmsTest {
         @Nested
         @DisplayName("with conditions")
         inner class FindLongestWordWithConditions {
-
+            @Test
+            fun `should return the first item in the word map that matches input exactly and satisfies the conditions`() {
+                val wordMap = ProcessedWordMap(TestProcessedWordLoader(testWordMap));
+                val longestWord = findLongestWord(wordMap, "eilnst", mutableListOf(Pair(0, 'n'), Pair(3, 's')))
+                assertEquals(longestWord.first, "enlist")
+                assertEquals(longestWord.second, -1)
+            }
         }
     }
 }

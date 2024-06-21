@@ -3,7 +3,7 @@ package algorithms
 import words.ProcessedWordMap
 import java.util.*
 
-fun findLongestWord(wordMap: ProcessedWordMap, input: String): Pair<String, Int> {
+fun findLongestWord(wordMap: ProcessedWordMap, input: String, conditions: MutableList<Pair<Int, Char>> = mutableListOf()): Pair<String, Int> {
     if (input.isEmpty())
         return Pair("", 0)
 
