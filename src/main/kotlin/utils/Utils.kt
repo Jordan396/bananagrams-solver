@@ -24,7 +24,7 @@ fun sortThenCombine(chars: MutableList<Char>): String {
 }
 
 fun removeElements(list1: MutableList<Char>, list2: MutableList<Char>): MutableList<Char> {
-    val list1Copy = list1.toMutableList() // Create a copy of list1
+    val list1Copy = list1.toMutableList()
     val map = list2.groupingBy { it }.eachCount().toMutableMap()
 
     val iterator = list1Copy.listIterator()

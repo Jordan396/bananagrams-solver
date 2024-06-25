@@ -1,10 +1,14 @@
 package utils
 
 import models.GameMode
+import models.board.Board
 import models.pile.Pile
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import kotlin.test.assertTrue
 
 class UtilsTest {
     @Test
@@ -37,5 +41,31 @@ class UtilsTest {
 
         // assert
         assertEquals("aazzz", result)
+    }
+
+    @Nested
+    @DisplayName("removeElements")
+    inner class RemoveElements {
+        @Test
+        fun `should remove elements from list 1 that can be found in list 2`(
+        ) {
+            val list1 = mutableListOf('a', 'b', 'c', 'd', 'a')
+            val list2 = mutableListOf('a', 'b')
+
+            val result = removeElements(list1, list2)
+
+            assertEquals(mutableListOf('c', 'd', 'a'), result)
+        }
+
+        @Test
+        fun `should remove elements from list 1 that can be found in list 2 (with extra elements)`(
+        ) {
+            val list1 = mutableListOf('a')
+            val list2 = mutableListOf('a', 'b')
+
+            val result = removeElements(list1, list2)
+
+           assertTrue { result.isEmpty() }
+        }
     }
 }
