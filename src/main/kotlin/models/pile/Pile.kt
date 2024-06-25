@@ -28,11 +28,12 @@ class Pile(gameMode: GameMode, tilePileConfig: Map<Char, Int> = DEFAULT_TILE_PIL
         if (numberOfTilesToDraw <= 0){
             throw Exception("Player must draw 1 or more tiles!")
         }
-        if (tilePile.size < numberOfTilesToDraw){
-            throw Exception("Size of tile pile is smaller than the number of tiles player wishes to draw!")
-        }
 
-        for(i in 0 until numberOfTilesToDraw){
+        var tilesToDraw = numberOfTilesToDraw
+        if (tilePile.size < numberOfTilesToDraw)
+           tilesToDraw = tilePile.size
+
+        for(i in 0 until tilesToDraw){
             val randomIndex = Random.nextInt(tilePile.size)
             val randomElement = tilePile[randomIndex]
 

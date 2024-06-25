@@ -21,13 +21,14 @@ class Board {
         position: Pair<Int, Int> = Pair(0, 0)
     ): MutableList<Char> {
         var boardCopy = this.createCopyOfBoard()
+        var tilesCopy = tiles.toMutableList()
 
         try {
             if (boardCopy.isEmpty()) {
                 boardCopy[0] = mutableMapOf()
                 var col = 0
                 for (char in word) {
-                    if (tiles.remove(char)) {
+                    if (tilesCopy.remove(char)) {
                         boardCopy = this.insertCharAt(boardCopy, 0, col, char)
                         col++;
                     } else {
@@ -51,7 +52,7 @@ class Board {
                             )
                         }
                     } else {
-                        if (tiles.remove(char)) {
+                        if (tilesCopy.remove(char)) {
                             boardCopy = insertCharAt(boardCopy, row, col, char)
                         } else {
                             throw Exception("Cannot place tile '${char}' at [${row}, ${col}] as the tile is not available.")
@@ -67,11 +68,11 @@ class Board {
 
             // after adding, check if there are unused tiles
             this.board = boardCopy
-            return tiles
+            return tilesCopy
         } catch (e: Exception) {
             println("Error: Failed to add word - ${e.message}")
         }
-        return tiles
+        return tilesCopy
     }
 
     fun print() {
