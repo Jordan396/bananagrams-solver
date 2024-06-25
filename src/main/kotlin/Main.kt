@@ -7,6 +7,7 @@ import models.board.Board
 import models.GameMode
 import models.pile.Pile
 import utils.readUserInputInteger
+import utils.sortThenCombine
 import words.FileProcessedWordLoader
 import words.ProcessedWordMap
 import java.io.File
@@ -76,7 +77,7 @@ private fun start(gameMode: GameMode) {
     println("======================================================")
 
     // Initialise game state
-    val board = Board
+    val board = Board()
     val commonPile = Pile(gameMode)
     val playerPile = Pile(gameMode, mapOf())
     val wordMap = ProcessedWordMap(FileProcessedWordLoader(OUTPUT_WORDS_DICTIONARY_FILE_PATH));
@@ -86,10 +87,19 @@ private fun start(gameMode: GameMode) {
     playerPile.add(tilesDrawnOnFirstDraw)
     playerPile.print()
 
-    // test
-    println(playerPile.sortThenCombine())
-    val (longestWord, remainingTiles) = algorithms.findLongestWord(wordMap, playerPile.sortThenCombine())
-    println("longest word formed is $longestWord")
+    // initial move, just find the longest word and put it on the board
+    val longestWord = algorithms.findLongestWord(wordMap, sortThenCombine(playerPile.get()))
+    board.add(longestWord.first, longestWord.first.toMutableList())
+    playerPile.remove(longestWord.first.toMutableList())
+    board.print()
+    playerPile.print()
+
+//    // keep playing...
+//    while (true) {
+//        val longestWord = algorithms.findLongestWord(wordMap, playerPile.sortThenCombine())
+//        println("longest word formed is $longestWord")
+//        playerPile.remove(longestWord.toMutableList())
+//    }
 }
 
 private fun loadRawWords(): Map<String, String> {

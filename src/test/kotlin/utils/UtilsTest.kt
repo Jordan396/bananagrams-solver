@@ -1,5 +1,7 @@
 package utils
 
+import models.GameMode
+import models.pile.Pile
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -23,5 +25,17 @@ class UtilsTest {
         assertEquals("Index out of bounds", assertThrows<Exception> {
             removeCharAtIndex(word, 4)
         }.message)
+    }
+
+    @Test
+    fun `sortThenCombine sorts the chars in ascending order`() {
+        // arrange
+        val chars = mutableListOf('z', 'z', 'z', 'a', 'a')
+
+        // act
+        val result = sortThenCombine(chars)
+
+        // assert
+        assertEquals("aazzz", result)
     }
 }

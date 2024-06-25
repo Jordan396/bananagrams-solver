@@ -7,28 +7,80 @@ enum class Direction {
     LEFT_RIGHT, UP_DOWN
 }
 
-object Board {
+class Board {
     private var board: MutableMap<Int, MutableMap<Int, Char>>
 
     init {
         board = mutableMapOf()
     }
 
-    fun add(word: String, direction: Direction = Direction.LEFT_RIGHT, position: Pair<Int, Int> = Pair(0,0)) {
-        if (this.board.isEmpty()){
-            this.board[0] = mutableMapOf()
-            var col: Int = 0
-            for (char in word){
-                this.board[0]?.set(col, char)
-                col++;
+    fun add(
+        word: String,
+        tiles: MutableList<Char>,
+        direction: Direction = Direction.LEFT_RIGHT,
+        position: Pair<Int, Int> = Pair(0, 0)
+    ) {
+        var boardCopy = this.createCopyOfBoard()
+
+        try {
+            if (boardCopy.isEmpty()) {
+                boardCopy[0] = mutableMapOf()
+                var col = 0
+                for (char in word) {
+                    if (tiles.remove(char)) {
+                        boardCopy = this.insertCharAt(boardCopy, 0, col, char)
+                        col++;
+                    } else {
+                        throw Exception("Cannot place tile '${char}' at [${0}, ${col}] as the tile is not available.")
+                    }
+                }
+            } else {
+                var col = position.second
+                var row = position.first
+                for (char in word) {
+                    if (charExistsAt(boardCopy, row, col)) {
+                        if (getCharAt(boardCopy, row, col) != char) {
+                            throw Exception(
+                                "Expected tile '${char}' to be at [[${row}, ${col}]] but is instead occupied by tile '${
+                                    getCharAt(
+                                        boardCopy,
+                                        row,
+                                        col
+                                    )
+                                }'."
+                            )
+                        }
+                    } else {
+                        if (tiles.remove(char)) {
+                            boardCopy = insertCharAt(boardCopy, row, col, char)
+                        } else {
+                            throw Exception("Cannot place tile '${char}' at [${row}, ${col}] as the tile is not available.")
+                        }
+                    }
+                    if (direction == Direction.LEFT_RIGHT) {
+                        col++;
+                    } else {
+                        row++;
+                    }
+                }
             }
-            return
+
+            // after adding, check if there are unused tiles
+            if (tiles.isEmpty()){
+                this.board = boardCopy
+                return
+            } else {
+                throw Exception("After forming the word '${word}', there are some unused tiles remaining.")
+            }
+        } catch (e: Exception) {
+            println("Error: Failed to add word - ${e.message}")
         }
+        return
     }
 
     fun print() {
         val sortedBoard = this.sort()
-        if (sortedBoard.isEmpty()){
+        if (sortedBoard.isEmpty()) {
             println("The board is currently empty.")
             return
         }
@@ -46,14 +98,14 @@ object Board {
         val bottomMostRow = sortedBoard.lastKey()
 
         // start printing
-        for (i in 0..rightMostCol - leftMostCol + 2){
+        for (i in 0..rightMostCol - leftMostCol + 2) {
             print('_')
         }
         println()
-        for (row in topMostRow..bottomMostRow){
+        for (row in topMostRow..bottomMostRow) {
             print('|')
-            for (col in leftMostCol..rightMostCol){
-                if (sortedBoard[row]!!.containsKey(col)){
+            for (col in leftMostCol..rightMostCol) {
+                if (sortedBoard[row]!!.containsKey(col)) {
                     print(sortedBoard[row]!![col])
                 } else {
                     print(' ')
@@ -61,30 +113,55 @@ object Board {
             }
             println('|')
         }
-        for (i in 0..rightMostCol - leftMostCol + 2){
+        for (i in 0..rightMostCol - leftMostCol + 2) {
             print('-')
         }
-
+        println()
     }
 
     fun reset() {
         board = mutableMapOf()
     }
 
-    fun validate(): Boolean{
+    fun validate(): Boolean {
         return false
     }
 
-    private fun insertCharAt(row: Int, col: Int, char: Char){
-        if (this.board.containsKey(row) && this.board[row]!!.containsKey(col)){
-            throw Error("The tile ${this.board[row]?.get(col)} already exists at [${row}, ${col}].")
+    private fun insertCharAt(
+        board: MutableMap<Int, MutableMap<Int, Char>>,
+        row: Int,
+        col: Int,
+        char: Char
+    ): MutableMap<Int, MutableMap<Int, Char>> {
+        if (board.containsKey(row) && board[row]!!.containsKey(col)) {
+            throw Error("The tile ${board[row]?.get(col)} already exists at [${row}, ${col}].")
         }
-        this.board[row]?.set(col, char)
+
+        if (!board.containsKey(row)) board[row] = mutableMapOf()
+        board[row]?.set(col, char)
+        return board
     }
 
-    private fun sort(): SortedMap<Int, SortedMap<Int, Char>>{
+    private fun charExistsAt(board: MutableMap<Int, MutableMap<Int, Char>>, row: Int, col: Int): Boolean {
+        return board.containsKey(row) && board[row]!!.containsKey(col)
+    }
+
+    private fun getCharAt(board: MutableMap<Int, MutableMap<Int, Char>>, row: Int, col: Int): Char {
+        if (board.containsKey(row) && board[row]!!.containsKey(col)) {
+            return board[row]!![col]!!
+        }
+        throw Error("No tile exists at [${row}, ${col}].")
+    }
+
+    private fun sort(): SortedMap<Int, SortedMap<Int, Char>> {
         val sortedBoard: MutableMap<Int, SortedMap<Int, Char>> = mutableMapOf()
         for ((key, value) in board.entries) sortedBoard[key] = value.toSortedMap()
         return sortedBoard.toSortedMap()
+    }
+
+    private fun createCopyOfBoard(): MutableMap<Int, MutableMap<Int, Char>> {
+        return board.mapValues { (_, innerMap) ->
+            innerMap.toMutableMap()
+        }.toMutableMap()
     }
 }
