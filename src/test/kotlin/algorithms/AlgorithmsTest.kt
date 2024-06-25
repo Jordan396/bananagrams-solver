@@ -33,6 +33,9 @@ class AlgorithmsTest {
         ),
         "ilst" to mutableListOf(
             "slit"
+        ),
+        "ehilrst" to mutableListOf(
+            "slither"
         )
     )
 
@@ -95,10 +98,19 @@ class AlgorithmsTest {
             }
 
             @Test
-            fun `given there are no suitable strings that can be formed, should return `() {
+            fun `given there are no suitable strings that can be formed, should return empty string`() {
                 val wordMap = ProcessedWordMap(TestProcessedWordLoader(testWordMap));
                 val longestWord = findLongestWord(wordMap, "eilnt", mutableListOf(Pair(0, 's'), Pair(1, 'o')))
                 assertEquals("", longestWord.first)
+                assertEquals(0, longestWord.second)
+            }
+
+            // TODO: Add a test for if a condition is relaxed and hence there is a boundary, only accept the word if it satisfies the boundary
+            @Test
+            fun `given there is a condition that invalidates the longest string, should return the next suitable string`() {
+                val wordMap = ProcessedWordMap(TestProcessedWordLoader(testWordMap));
+                val longestWord = findLongestWord(wordMap, "ehilrs", mutableListOf(Pair(3, 't'), Pair(6, 'i')))
+                assertEquals("slit", longestWord.first)
                 assertEquals(0, longestWord.second)
             }
         }

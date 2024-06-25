@@ -62,8 +62,9 @@ private fun wordMeetsConditionsAt(
         if (word[i] == conditions[condition].second) {
             condition++;
             while (condition != conditions.size) {
-                if (i + conditions[condition].first < word.length) {
-                    if (word[i + conditions[condition].first] != conditions[condition].second) {
+                val expectedPos = i + conditions[condition].first - conditions[0].first
+                if (expectedPos < word.length) {
+                    if (word[expectedPos] != conditions[condition].second) {
                         valid = false;
                         break;
                     }
