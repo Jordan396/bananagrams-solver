@@ -123,8 +123,12 @@ class Board {
         board = mutableMapOf()
     }
 
-    fun validate(): Boolean {
-        return false
+    fun getTilesInRow(row: Int): List<Pair<Int, Char>> {
+        if (!this.board.containsKey(row)){
+            return listOf()
+        }
+
+        return this.board[row]!!.toList().sortedBy { it.first }
     }
 
     private fun insertCharAt(

@@ -24,6 +24,31 @@ class BoardTest {
     }
 
     @Nested
+    @DisplayName("getTilesInRow")
+    inner class getTilesInRow {
+        @Test
+        fun `should return a list of characters sorted by the index for a given row on the board`(){
+            val board = Board()
+            board.add("hello", mutableListOf('h', 'e', 'l', 'l', 'o'))
+            board.add("human", mutableListOf('u', 'm', 'a', 'n'), Direction.UP_DOWN, Pair(0, 0))
+
+            val row = board.getTilesInRow(0)
+
+            assertEquals(listOf(Pair(0, 'h'), Pair(1, 'e'), Pair(2, 'l'), Pair(3, 'l'), Pair(4, 'o')), row)
+        }
+
+        @Test
+        fun `should return an empty list for a given row on the board if row does not have tiles`(){
+            val board = Board()
+            board.add("hello", mutableListOf('h', 'e', 'l', 'l', 'o'))
+
+            val row = board.getTilesInRow(1)
+
+            assertEquals(listOf(), row)
+        }
+    }
+
+    @Nested
     @DisplayName("add")
     inner class Add {
         @Test
