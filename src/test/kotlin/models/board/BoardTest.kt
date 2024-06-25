@@ -25,7 +25,7 @@ class BoardTest {
 
     @Nested
     @DisplayName("getTilesInRow")
-    inner class getTilesInRow {
+    inner class GetTilesInRow {
         @Test
         fun `should return a list of characters sorted by the index for a given row on the board`(){
             val board = Board()
@@ -45,6 +45,31 @@ class BoardTest {
             val row = board.getTilesInRow(1)
 
             assertEquals(listOf(), row)
+        }
+    }
+
+    @Nested
+    @DisplayName("getTilesInCol")
+    inner class GetTilesInCol {
+        @Test
+        fun `should return a list of characters sorted by the index for a given col on the board`(){
+            val board = Board()
+            board.add("hello", mutableListOf('h', 'e', 'l', 'l', 'o'))
+            board.add("human", mutableListOf('u', 'm', 'a', 'n'), Direction.UP_DOWN, Pair(0, 0))
+
+            val col = board.getTilesInCol(0)
+
+            assertEquals(listOf(Pair(0, 'h'), Pair(1, 'u'), Pair(2, 'm'), Pair(3, 'a'), Pair(4, 'n')), col)
+        }
+
+        @Test
+        fun `should return an empty list for a given col on the board if col does not have tiles`(){
+            val board = Board()
+            board.add("hello", mutableListOf('h', 'e', 'l', 'l', 'o'))
+
+            val col = board.getTilesInCol(6)
+
+            assertEquals(listOf(), col)
         }
     }
 

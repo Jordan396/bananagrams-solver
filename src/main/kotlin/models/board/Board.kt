@@ -66,7 +66,7 @@ class Board {
             }
 
             // after adding, check if there are unused tiles
-            if (tiles.isEmpty()){
+            if (tiles.isEmpty()) {
                 this.board = boardCopy
                 return
             } else {
@@ -124,11 +124,23 @@ class Board {
     }
 
     fun getTilesInRow(row: Int): List<Pair<Int, Char>> {
-        if (!this.board.containsKey(row)){
+        if (!this.board.containsKey(row)) {
             return listOf()
         }
 
         return this.board[row]!!.toList().sortedBy { it.first }
+    }
+
+    fun getTilesInCol(col: Int): List<Pair<Int, Char>> {
+        val result = mutableListOf<Pair<Int, Char>>()
+
+        for ((row, cols) in this.board) {
+            if (cols.containsKey(col)) {
+                result.add(Pair(row, cols[col]!!))
+            }
+        }
+
+        return result.sortedBy { it.first }
     }
 
     private fun insertCharAt(
