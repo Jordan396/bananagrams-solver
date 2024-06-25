@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken
 import constants.OUTPUT_WORDS_DICTIONARY_FILE_PATH
 import models.board.Board
 import models.GameMode
+import models.board.Direction
 import models.pile.Pile
 import utils.readUserInputInteger
 import utils.sortThenCombine
@@ -96,7 +97,29 @@ private fun start(gameMode: GameMode) {
 
     // keep playing...
     while (true) {
+        var added = false
 
+        // attempt to add to cols first
+        val cols = board.getCols()
+        for (col in cols) {
+            val tilesInCol = board.getTilesInCol(col)
+            val tilesInColStart = tilesInCol.first().first
+            val tilesInColOffset: MutableList<Pair<Int, Char>> = mutableListOf()
+            for (tile in tilesInCol){
+                tilesInColOffset.add(Pair(tile.first - tilesInColStart, tile.second))
+            }
+            longestWord = algorithms.findLongestWord(wordMap, sortThenCombine(playerPile.get()), tilesInColOffset)
+            if (longestWord.first != ""){
+                added = true
+                val remainingTiles = board.add(longestWord.first, playerPile.get(), Direction.UP_DOWN, Pair(longestWord.second + tilesInColStart, col))
+                val usedTiles = utils.removeElements(playerPile.get(), remainingTiles)
+                playerPile.remove(usedTiles)
+                break
+            }
+        }
+
+        if (added)
+            break
     }
 }
 

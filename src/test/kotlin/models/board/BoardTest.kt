@@ -186,24 +186,6 @@ class BoardTest {
             }
 
             @Test
-            fun `should not add a word to board if board is empty and there are excess tiles provided`(
-            ) {
-                val board = Board()
-                board.add("hello", mutableListOf('h', 'e', 'l', 'l' , 'o', 'w'))
-
-                assertEquals(
-                    "Error: Failed to add word - After forming the word 'hello', there are some unused tiles remaining.\n", outContent.toString()
-                )
-
-                outContent.reset()
-                board.print()
-
-                assertEquals(
-                    "The board is currently empty.\n", outContent.toString()
-                )
-            }
-
-            @Test
             fun `should not add a word to board if board is not empty and there are insufficient tiles provided`(
             ) {
                 val board = Board()

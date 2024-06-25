@@ -19,7 +19,7 @@ class Board {
         tiles: MutableList<Char>,
         direction: Direction = Direction.LEFT_RIGHT,
         position: Pair<Int, Int> = Pair(0, 0)
-    ) {
+    ): MutableList<Char> {
         var boardCopy = this.createCopyOfBoard()
 
         try {
@@ -66,16 +66,12 @@ class Board {
             }
 
             // after adding, check if there are unused tiles
-            if (tiles.isEmpty()) {
-                this.board = boardCopy
-                return
-            } else {
-                throw Exception("After forming the word '${word}', there are some unused tiles remaining.")
-            }
+            this.board = boardCopy
+            return tiles
         } catch (e: Exception) {
             println("Error: Failed to add word - ${e.message}")
         }
-        return
+        return tiles
     }
 
     fun print() {
@@ -121,6 +117,18 @@ class Board {
 
     fun reset() {
         board = mutableMapOf()
+    }
+
+    fun getRows(): List<Int> {
+        return this.board.keys.toList()
+    }
+
+    fun getCols(): List<Int> {
+        val columns = mutableSetOf<Int>()
+        for (row in this.board.values) {
+            columns.addAll(row.keys)
+        }
+        return columns.toList().sorted()
     }
 
     fun getTilesInRow(row: Int): List<Pair<Int, Char>> {
