@@ -115,7 +115,7 @@ fun findLongestWord(
     queue.add(input)
 
     // optimisation, track all processed strings
-    val set: MutableSet<String> = mutableSetOf()
+    val set: MutableSet<String> = mutableSetOf(input)
 
     // attempt to form the longest word
     while (!queue.isEmpty()) {
@@ -139,10 +139,10 @@ fun findLongestWord(
         if (result.first != null) return Pair(result.first!!, result.second)
 
         // only if no condition can be met, then relax use fewer tiles
-        set.add(current)
         for (i in current.indices) {
             val newString = utils.removeCharAtIndex(current, i)
             if (!set.contains(newString)) {
+                set.add(newString)
                 queue.add(newString)
             }
         }
