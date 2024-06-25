@@ -68,6 +68,9 @@ private fun wordMeetsConditionsAt(
                         valid = false;
                         break;
                     }
+                } else {
+                    valid = false;
+                    break;
                 }
                 condition++;
             }

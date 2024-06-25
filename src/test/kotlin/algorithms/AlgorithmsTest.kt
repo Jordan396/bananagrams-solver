@@ -105,7 +105,6 @@ class AlgorithmsTest {
                 assertEquals(0, longestWord.second)
             }
 
-            // TODO: Add a test for if a condition is relaxed and hence there is a boundary, only accept the word if it satisfies the boundary
             @Test
             fun `given there is a condition that invalidates the longest string, should return the next suitable string`() {
                 val wordMap = ProcessedWordMap(TestProcessedWordLoader(testWordMap));
