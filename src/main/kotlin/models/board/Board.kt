@@ -14,20 +14,30 @@ class Board {
         board = mutableMapOf()
     }
 
+    /**
+     * Adds a word to the board.
+     *
+     * @param word The word to add to the board.
+     * @param tiles The tiles available for adding the word to the board.
+     * @param direction Direction of the word, either left-right or top-down.
+     * @param position Coordinates of the starting position of the word.
+     * @return Tiles remaining after adding the word to the board.
+     */
     fun add(
         word: String,
         tiles: MutableList<Char>,
         direction: Direction = Direction.LEFT_RIGHT,
         position: Pair<Int, Int> = Pair(0, 0)
-    ) {
+    ): MutableList<Char> {
         var boardCopy = this.createCopyOfBoard()
+        val tilesCopy = tiles.toMutableList()
 
         try {
             if (boardCopy.isEmpty()) {
                 boardCopy[0] = mutableMapOf()
                 var col = 0
                 for (char in word) {
-                    if (tiles.remove(char)) {
+                    if (tilesCopy.remove(char)) {
                         boardCopy = this.insertCharAt(boardCopy, 0, col, char)
                         col++;
                     } else {
@@ -51,7 +61,7 @@ class Board {
                             )
                         }
                     } else {
-                        if (tiles.remove(char)) {
+                        if (tilesCopy.remove(char)) {
                             boardCopy = insertCharAt(boardCopy, row, col, char)
                         } else {
                             throw Exception("Cannot place tile '${char}' at [${row}, ${col}] as the tile is not available.")
@@ -66,18 +76,17 @@ class Board {
             }
 
             // after adding, check if there are unused tiles
-            if (tiles.isEmpty()){
-                this.board = boardCopy
-                return
-            } else {
-                throw Exception("After forming the word '${word}', there are some unused tiles remaining.")
-            }
+            this.board = boardCopy
+            return tilesCopy
         } catch (e: Exception) {
             println("Error: Failed to add word - ${e.message}")
         }
-        return
+        return tilesCopy
     }
 
+    /**
+     * Pretty prints the board.
+     */
     fun print() {
         val sortedBoard = this.sort()
         if (sortedBoard.isEmpty()) {
@@ -119,14 +128,77 @@ class Board {
         println()
     }
 
+    /**
+     * Resets the board to an empty board.
+     */
     fun reset() {
         board = mutableMapOf()
     }
 
-    fun validate(): Boolean {
-        return false
+    /**
+     * Gets the indices of rows with tiles on the board.
+     *
+     * @return Indices of the rows with tiles on the board.
+     */
+    fun getRows(): List<Int> {
+        return this.board.keys.toList()
     }
 
+    /**
+     * Gets the indices of columns with tiles on the board.
+     *
+     * @return Indices of the columns with tiles on the board.
+     */
+    fun getCols(): List<Int> {
+        val columns = mutableSetOf<Int>()
+        for (row in this.board.values) {
+            columns.addAll(row.keys)
+        }
+        return columns.toList().sorted()
+    }
+
+    /**
+     * Gets all tiles in a specified row.
+     *
+     * @param row The row to get all tiles from.
+     * @return All tiles in the specified row.
+     */
+    fun getTilesInRow(row: Int): List<Pair<Int, Char>> {
+        if (!this.board.containsKey(row)) {
+            return listOf()
+        }
+
+        return this.board[row]!!.toList().sortedBy { it.first }
+    }
+
+    /**
+     * Gets all tiles in a specified columns.
+     *
+     * @param col The columns to get all tiles from.
+     * @return All tiles in the specified column.
+     */
+    fun getTilesInCol(col: Int): List<Pair<Int, Char>> {
+        val result = mutableListOf<Pair<Int, Char>>()
+
+        for ((row, cols) in this.board) {
+            if (cols.containsKey(col)) {
+                result.add(Pair(row, cols[col]!!))
+            }
+        }
+
+        return result.sortedBy { it.first }
+    }
+
+    /**
+     * Inserts a given character at the specified row and column of the board.
+     * This method throws an exception if a tile already exists in the position where the new tile is to be inserted.
+     *
+     * @param board The board to insert the character to.
+     * @param row The row where the character is to be inserted.
+     * @param col The column where the character is to be inserted.
+     * @param char The character to insert.
+     * @return The board with the character inserted.
+     */
     private fun insertCharAt(
         board: MutableMap<Int, MutableMap<Int, Char>>,
         row: Int,
@@ -142,6 +214,14 @@ class Board {
         return board
     }
 
+    /**
+     * Checks if a tile already exists at a specified position.
+     *
+     * @param board The board to check.
+     * @param row The row of the tile.
+     * @param col The column of the tile.
+     * @return True if a tile already exists at the specified position, false otherwise.
+     */
     private fun charExistsAt(board: MutableMap<Int, MutableMap<Int, Char>>, row: Int, col: Int): Boolean {
         return board.containsKey(row) && board[row]!!.containsKey(col)
     }
@@ -153,12 +233,22 @@ class Board {
         throw Error("No tile exists at [${row}, ${col}].")
     }
 
+    /**
+     * Sorts the board by rows and then by columns within each row.
+     *
+     * @return The sorted board.
+     */
     private fun sort(): SortedMap<Int, SortedMap<Int, Char>> {
         val sortedBoard: MutableMap<Int, SortedMap<Int, Char>> = mutableMapOf()
         for ((key, value) in board.entries) sortedBoard[key] = value.toSortedMap()
         return sortedBoard.toSortedMap()
     }
 
+    /**
+     * Creates a copy of board.
+     *
+     * @return A copy of the board.
+     */
     private fun createCopyOfBoard(): MutableMap<Int, MutableMap<Int, Char>> {
         return board.mapValues { (_, innerMap) ->
             innerMap.toMutableMap()
