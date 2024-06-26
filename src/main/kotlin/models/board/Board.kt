@@ -135,6 +135,10 @@ class Board {
         board = mutableMapOf()
     }
 
+    fun isEmpty(): Boolean {
+        return this.board.isEmpty()
+    }
+
     /**
      * Gets the indices of rows with tiles on the board.
      *

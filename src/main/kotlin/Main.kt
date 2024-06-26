@@ -88,18 +88,13 @@ private fun start(gameMode: GameMode) {
     playerPile.add(tilesDrawnOnFirstDraw)
     playerPile.print()
 
-    // initial move, just find the longest word and put it on the board
-    var longestWord = algorithms.findLongestWord(wordMap, sortThenCombine(playerPile.get()))
-    board.add(longestWord.first, longestWord.first.toMutableList())
-    playerPile.remove(longestWord.first.toMutableList())
-
-    // keep playing...
+    // play...
     while (commonPile.getPileSize() != 0) {
         println("Player's current configuration: ")
         board.print()
         playerPile.print()
 
-        if (playerPile.getPileSize() == 0){
+        if (playerPile.getPileSize() == 0) {
             println("Peel!")
             val newTiles = commonPile.draw(3)
             playerPile.add(newTiles)
@@ -107,6 +102,15 @@ private fun start(gameMode: GameMode) {
         }
 
         var added = false
+        var longestWord: Pair<String, Int>
+
+        // initial move, just find the longest word and put it on the board
+        if (board.isEmpty()) {
+            longestWord = algorithms.findLongestWord(wordMap, sortThenCombine(playerPile.get()))
+            board.add(longestWord.first, longestWord.first.toMutableList())
+            playerPile.remove(longestWord.first.toMutableList())
+            continue
+        }
 
         // attempt to add to cols first
         val cols = board.getCols()
@@ -114,14 +118,19 @@ private fun start(gameMode: GameMode) {
             val tilesInCol = board.getTilesInCol(col)
             val tilesInColStart = tilesInCol.first().first
             val tilesInColOffset: MutableList<Pair<Int, Char>> = mutableListOf()
-            for (tile in tilesInCol){
+            for (tile in tilesInCol) {
                 tilesInColOffset.add(Pair(tile.first - tilesInColStart, tile.second))
             }
             longestWord = algorithms.findLongestWord(wordMap, sortThenCombine(playerPile.get()), tilesInColOffset)
-            if (longestWord.first != ""){
+            if (longestWord.first != "") {
                 println("Adding ${longestWord.first} to column $col...")
                 added = true
-                val remainingTiles = board.add(longestWord.first, playerPile.get(), Direction.UP_DOWN, Pair(longestWord.second + tilesInColStart, col))
+                val remainingTiles = board.add(
+                    longestWord.first,
+                    playerPile.get(),
+                    Direction.UP_DOWN,
+                    Pair(longestWord.second + tilesInColStart, col)
+                )
                 val usedTiles = utils.removeElements(playerPile.get(), remainingTiles)
                 playerPile.remove(usedTiles)
                 break
@@ -137,23 +146,38 @@ private fun start(gameMode: GameMode) {
             val tilesInRow = board.getTilesInRow(row)
             val tilesInRowStart = tilesInRow.first().first
             val tilesInRowOffset: MutableList<Pair<Int, Char>> = mutableListOf()
-            for (tile in tilesInRow){
+            for (tile in tilesInRow) {
                 tilesInRowOffset.add(Pair(tile.first - tilesInRowStart, tile.second))
             }
             longestWord = algorithms.findLongestWord(wordMap, sortThenCombine(playerPile.get()), tilesInRowOffset)
-            if (longestWord.first != ""){
+            if (longestWord.first != "") {
                 println("Adding ${longestWord.first} to row $row...")
-                val remainingTiles = board.add(longestWord.first, playerPile.get(), Direction.LEFT_RIGHT, Pair(row, longestWord.second + tilesInRowStart))
+                val remainingTiles = board.add(
+                    longestWord.first,
+                    playerPile.get(),
+                    Direction.LEFT_RIGHT,
+                    Pair(row, longestWord.second + tilesInRowStart)
+                )
                 val usedTiles = utils.removeElements(playerPile.get(), remainingTiles)
                 playerPile.remove(usedTiles)
                 break
             }
         }
+
+        // there are no more playable moves
+        println("No more playable moves, exiting...")
+        break;
     }
 
     println("Final board configuration: ")
     board.print()
-    playerPile.print()
+
+    if (0 == playerPile.getPileSize()) {
+        println("You win!")
+    } else {
+        println("You have some tiles remaining after the game ended. You lose!")
+        playerPile.print()
+    }
 }
 
 private fun loadRawWords(): Map<String, String> {

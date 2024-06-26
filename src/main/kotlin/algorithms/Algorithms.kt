@@ -19,7 +19,7 @@ private fun relax(
 
         // process it, add letters from constraints and then check if constraints can be met
         var inputWithConstraints = input
-        for (condition in conditions) {
+        for (condition in current.first) {
             inputWithConstraints += condition.second
         }
         inputWithConstraints = sortThenCombine(inputWithConstraints.toMutableList())
