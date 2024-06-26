@@ -77,6 +77,12 @@ private fun start(gameMode: GameMode) {
     println("================== GAME IS STARTING ==================")
     println("======================================================")
 
+    // early return for gameMode == PLAYER
+    if (gameMode == GameMode.PLAYER){
+        println("Player vs Player mode is still in development. Check in again later!")
+        return
+    }
+
     // Initialise game state
     val board = Board()
     val commonPile = Pile(gameMode)
