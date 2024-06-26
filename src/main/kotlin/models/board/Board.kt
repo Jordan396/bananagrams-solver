@@ -21,7 +21,7 @@ class Board {
         position: Pair<Int, Int> = Pair(0, 0)
     ): MutableList<Char> {
         var boardCopy = this.createCopyOfBoard()
-        var tilesCopy = tiles.toMutableList()
+        val tilesCopy = tiles.toMutableList()
 
         try {
             if (boardCopy.isEmpty()) {

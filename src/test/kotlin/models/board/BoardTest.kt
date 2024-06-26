@@ -79,7 +79,7 @@ class BoardTest {
         @Test
         fun `should add a word to the board when board is empty`() {
             val board = Board()
-            board.add("hello", mutableListOf('h', 'e', 'l', 'l', 'o'))
+            val unusedTiles = board.add("hello", mutableListOf('h', 'e', 'l', 'l', 'o', 'w'))
             board.print()
 
             assertEquals(
@@ -87,6 +87,7 @@ class BoardTest {
                         "|hello|\n" +
                         "-------\n", outContent.toString()
             )
+            assertEquals(mutableListOf('w'), unusedTiles)
         }
 
         @Test
@@ -194,27 +195,6 @@ class BoardTest {
 
                 assertEquals(
                     "Error: Failed to add word - Cannot place tile 'l' at [-1, 4] as the tile is not available.\n", outContent.toString()
-                )
-
-                outContent.reset()
-                board.print()
-
-                assertEquals(
-                    "_______\n" +
-                            "|hello|\n" +
-                            "-------\n", outContent.toString()
-                )
-            }
-
-            @Test
-            fun `should not add a word to board if board is not empty and there are excess tiles provided`(
-            ) {
-                val board = Board()
-                board.add("hello", mutableListOf('h', 'e', 'l' ,'l', 'o'))
-                board.add("cello", mutableListOf('c', 'e', 'l', 'l', 'o'), Direction.UP_DOWN, Pair(-4, 4))
-
-                assertEquals(
-                    "Error: Failed to add word - After forming the word 'cello', there are some unused tiles remaining.\n", outContent.toString()
                 )
 
                 outContent.reset()
