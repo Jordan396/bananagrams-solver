@@ -84,6 +84,37 @@ class Board {
         return tilesCopy
     }
 
+    fun checkForAdjacentChars(
+        length: Int,
+        direction: Direction = Direction.LEFT_RIGHT,
+        position: Pair<Int, Int> = Pair(0, 0)
+    ): Boolean{
+        var col = position.second
+        var row = position.first
+
+        for (i in 0..length) {
+            if (!charExistsAt(this.board, row, col)) {
+                if (direction == Direction.LEFT_RIGHT) {
+                    if (charExistsAt(this.board, row - 1, col) || charExistsAt(this.board, row + 1, col)){
+                        return true
+                    }
+                } else {
+                    if (charExistsAt(this.board, row, col - 1) || charExistsAt(this.board, row, col + 1)){
+                        return true
+                    }
+                }
+            }
+
+            if (direction == Direction.LEFT_RIGHT) {
+                col++;
+            } else {
+                row++;
+            }
+        }
+
+        return false
+    }
+
     /**
      * Pretty prints the board.
      */

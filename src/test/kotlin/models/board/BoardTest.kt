@@ -1,10 +1,6 @@
 package models.board
 
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.*
 import java.io.ByteArrayOutputStream
 import java.io.PrintStream
 import kotlin.test.assertEquals
@@ -21,6 +17,46 @@ class BoardTest {
     @AfterEach
     fun restoreStreams() {
         System.setOut(System.out)
+    }
+
+    @Nested
+    @DisplayName("checkForAdjacentChars")
+    inner class CheckForAdjacentChars {
+        @Test
+        fun `should return true if adjacent characters which are not part of already valid words exist (left-right)`(){
+            val board = Board()
+            board.add("hello", mutableListOf('h', 'e', 'l', 'l', 'o'))
+            board.add("human", mutableListOf('u', 'm', 'a', 'n'), Direction.UP_DOWN, Pair(0, 0))
+
+            Assertions.assertTrue(board.checkForAdjacentChars(3, Direction.LEFT_RIGHT, Pair(1,0)))
+        }
+
+        @Test
+        fun `should return true if adjacent characters which are not part of already valid words exist (top-down)`(){
+            val board = Board()
+            board.add("hello", mutableListOf('h', 'e', 'l', 'l', 'o'))
+            board.add("human", mutableListOf('u', 'm', 'a', 'n'), Direction.UP_DOWN, Pair(0, 0))
+
+            Assertions.assertTrue(board.checkForAdjacentChars(3, Direction.UP_DOWN, Pair(0,1)))
+        }
+
+        @Test
+        fun `should return false if adjacent characters which are not part of already valid words do not exist (left-right)`(){
+            val board = Board()
+            board.add("hello", mutableListOf('h', 'e', 'l', 'l', 'o'))
+            board.add("human", mutableListOf('u', 'm', 'a', 'n'), Direction.UP_DOWN, Pair(0, 0))
+
+            Assertions.assertFalse(board.checkForAdjacentChars(3, Direction.LEFT_RIGHT, Pair(2,0)))
+        }
+
+        @Test
+        fun `should return false if adjacent characters which are not part of already valid words do not exist (top-down)`(){
+            val board = Board()
+            board.add("hello", mutableListOf('h', 'e', 'l', 'l', 'o'))
+            board.add("human", mutableListOf('u', 'm', 'a', 'n'), Direction.UP_DOWN, Pair(0, 0))
+
+            Assertions.assertFalse(board.checkForAdjacentChars(3, Direction.UP_DOWN, Pair(0,2)))
+        }
     }
 
     @Nested
