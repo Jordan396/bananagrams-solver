@@ -127,7 +127,14 @@ private fun start(gameMode: GameMode) {
             for (tile in tilesInCol) {
                 tilesInColOffset.add(Pair(tile.first - tilesInColStart, tile.second))
             }
+
             longestWord = algorithms.findLongestWord(wordMap, sortThenCombine(playerPile.get()), tilesInColOffset)
+            val exclusions: MutableSet<String> = mutableSetOf()
+            while (longestWord.first != "" &&  board.checkForAdjacentChars(longestWord.first.length, Direction.UP_DOWN, Pair(longestWord.second + tilesInColStart, col))){
+                exclusions.add(longestWord.first)
+                longestWord = algorithms.findLongestWord(wordMap, sortThenCombine(playerPile.get()), tilesInColOffset, exclusions)
+            }
+
             if (longestWord.first != "") {
                 println("Adding ${longestWord.first} to column $col...")
                 added = true
@@ -155,7 +162,14 @@ private fun start(gameMode: GameMode) {
             for (tile in tilesInRow) {
                 tilesInRowOffset.add(Pair(tile.first - tilesInRowStart, tile.second))
             }
+
             longestWord = algorithms.findLongestWord(wordMap, sortThenCombine(playerPile.get()), tilesInRowOffset)
+            val exclusions: MutableSet<String> = mutableSetOf()
+            while (longestWord.first != "" &&  board.checkForAdjacentChars(longestWord.first.length, Direction.LEFT_RIGHT, Pair(row, longestWord.second + tilesInRowStart))){
+                exclusions.add(longestWord.first)
+                longestWord = algorithms.findLongestWord(wordMap, sortThenCombine(playerPile.get()), tilesInRowOffset, exclusions)
+            }
+
             if (longestWord.first != "") {
                 println("Adding ${longestWord.first} to row $row...")
                 val remainingTiles = board.add(
