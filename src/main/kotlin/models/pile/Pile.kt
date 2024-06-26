@@ -18,22 +18,22 @@ class Pile(gameMode: GameMode, tilePileConfig: Map<Char, Int> = DEFAULT_TILE_PIL
         return this.tilePile.size
     }
 
-    fun get(): MutableList<Char>{
+    fun get(): MutableList<Char> {
         return this.tilePile
     }
 
     fun draw(numberOfTilesToDraw: Int): MutableList<Char> {
         val drawnTiles: MutableList<Char> = mutableListOf()
 
-        if (numberOfTilesToDraw <= 0){
+        if (numberOfTilesToDraw <= 0) {
             throw Exception("Player must draw 1 or more tiles!")
         }
 
         var tilesToDraw = numberOfTilesToDraw
         if (tilePile.size < numberOfTilesToDraw)
-           tilesToDraw = tilePile.size
+            tilesToDraw = tilePile.size
 
-        for(i in 0 until tilesToDraw){
+        for (i in 0 until tilesToDraw) {
             val randomIndex = Random.nextInt(tilePile.size)
             val randomElement = tilePile[randomIndex]
 
@@ -47,19 +47,24 @@ class Pile(gameMode: GameMode, tilePileConfig: Map<Char, Int> = DEFAULT_TILE_PIL
         return drawnTiles
     }
 
-    fun add(tiles: MutableList<Char>){
+    fun add(tiles: MutableList<Char>) {
         this.tilePile.addAll(tiles)
     }
 
-    fun print(){
-        val result = this.tilePile.joinToString(separator = ", ")
-        println("Here are your letters: $result")
+    fun print() {
+        if (this.tilePile.isEmpty()) {
+            println("Pile is empty!")
+        } else {
+            val result = this.tilePile.joinToString(separator = ", ")
+            println("Here are your letters: $result")
+
+        }
     }
 
-    fun remove(tiles: MutableList<Char>){
-       val tilePileCopy = tilePile.toMutableList()
-        for (char in tiles){
-            if (!tilePileCopy.remove(char)){
+    fun remove(tiles: MutableList<Char>) {
+        val tilePileCopy = tilePile.toMutableList()
+        for (char in tiles) {
+            if (!tilePileCopy.remove(char)) {
                 throw Exception("Cannot remove tile '${char}' from tile pile as tile does not exist.")
             }
         }

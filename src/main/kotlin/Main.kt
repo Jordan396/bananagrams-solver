@@ -103,6 +103,7 @@ private fun start(gameMode: GameMode) {
             println("Peel!")
             val newTiles = commonPile.draw(3)
             playerPile.add(newTiles)
+            playerPile.print()
         }
 
         var added = false
@@ -118,6 +119,7 @@ private fun start(gameMode: GameMode) {
             }
             longestWord = algorithms.findLongestWord(wordMap, sortThenCombine(playerPile.get()), tilesInColOffset)
             if (longestWord.first != ""){
+                println("Adding ${longestWord.first} to column $col...")
                 added = true
                 val remainingTiles = board.add(longestWord.first, playerPile.get(), Direction.UP_DOWN, Pair(longestWord.second + tilesInColStart, col))
                 val usedTiles = utils.removeElements(playerPile.get(), remainingTiles)
@@ -140,8 +142,8 @@ private fun start(gameMode: GameMode) {
             }
             longestWord = algorithms.findLongestWord(wordMap, sortThenCombine(playerPile.get()), tilesInRowOffset)
             if (longestWord.first != ""){
-                added = true
-                val remainingTiles = board.add(longestWord.first, playerPile.get(), Direction.LEFT_RIGHT, Pair(longestWord.second + tilesInRowStart, row))
+                println("Adding ${longestWord.first} to row $row...")
+                val remainingTiles = board.add(longestWord.first, playerPile.get(), Direction.LEFT_RIGHT, Pair(row, longestWord.second + tilesInRowStart))
                 val usedTiles = utils.removeElements(playerPile.get(), remainingTiles)
                 playerPile.remove(usedTiles)
                 break
