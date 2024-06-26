@@ -63,7 +63,7 @@ private fun prepare() {
     // Save to file
     val jsonString = GsonBuilder().setPrettyPrinting().create().toJson(resultMap)
     try {
-        File(constants.OUTPUT_WORDS_DICTIONARY_FILE_PATH).writeText(jsonString)
+        File(OUTPUT_WORDS_DICTIONARY_FILE_PATH).writeText(jsonString)
         println("Processed words saved!")
     } catch (e: IOException) {
         println("Error writing file: ${e.message}")
@@ -87,7 +87,7 @@ private fun start(gameMode: GameMode) {
     val board = Board()
     val commonPile = Pile(gameMode)
     val playerPile = Pile(gameMode, mapOf())
-    val wordMap = ProcessedWordMap(FileProcessedWordLoader(OUTPUT_WORDS_DICTIONARY_FILE_PATH));
+    val wordMap = ProcessedWordMap(FileProcessedWordLoader(OUTPUT_WORDS_DICTIONARY_FILE_PATH))
 
     println("How many tiles to draw at the start of the game?")
     val tilesDrawnOnFirstDraw = commonPile.draw(readUserInputInteger() ?: constants.DEFAULT_NUMBER_OF_TILES_FIRST_DRAW)
@@ -172,7 +172,7 @@ private fun start(gameMode: GameMode) {
 
         // there are no more playable moves
         println("No more playable moves, exiting...")
-        break;
+        break
     }
 
     println("Final board configuration: ")

@@ -62,6 +62,14 @@ class AlgorithmsTest {
             }
 
             @Test
+            fun `should return the first item in the word map that matches input that is not in exclusions`() {
+                val wordMap = ProcessedWordMap(TestProcessedWordLoader(testWordMap));
+                val longestWord = findLongestWord(wordMap, "eilnstv", exclude = mutableSetOf("listen"))
+                assertEquals("enlist", longestWord.first)
+                assertEquals(0, longestWord.second)
+            }
+
+            @Test
             fun `should return empty string if input is empty`() {
                 val wordMap = ProcessedWordMap(TestProcessedWordLoader(testWordMap));
                 val longestWord = findLongestWord(wordMap, "")

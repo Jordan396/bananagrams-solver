@@ -7,7 +7,8 @@ import java.util.*
 private fun relax(
     wordMap: ProcessedWordMap,
     input: String,
-    conditions: MutableList<Pair<Int, Char>>
+    conditions: MutableList<Pair<Int, Char>>,
+    exclude: Set<String>
 ): Pair<String?, Int> {
     val queue: Queue<Pair<MutableList<Pair<Int, Char>>, Pair<Int?, Int?>>> = LinkedList()
 
@@ -28,7 +29,7 @@ private fun relax(
         if (wordMap.processedWordMap().containsKey(inputWithConstraints)){
             for (word in wordMap.processedWordMap()[inputWithConstraints]!!) {
                 val indexWhereWordMeetsCondition = wordMeetsConditionsAt(word, current.first, current.second)
-                if (indexWhereWordMeetsCondition != null) {
+                if (indexWhereWordMeetsCondition != null && !exclude.contains(word)) {
                     return Pair(word, indexWhereWordMeetsCondition)
                 }
             }
@@ -54,30 +55,33 @@ private fun wordMeetsConditionsAt(
     conditions: MutableList<Pair<Int, Char>>,
     bounds: Pair<Int?, Int?>
 ): Int? {
+    if (conditions.isEmpty())
+        return 0
+
     for (i in word.indices) {
         var condition = 0
         var valid = true
 
         // check if we can find a word that satisfies all conditions
         if (word[i] == conditions[condition].second) {
-            condition++;
+            condition++
             while (condition != conditions.size) {
                 val expectedPos = i + conditions[condition].first - conditions[0].first
                 if (expectedPos < word.length) {
                     if (word[expectedPos] != conditions[condition].second) {
-                        valid = false;
-                        break;
+                        valid = false
+                        break
                     }
                 } else {
-                    valid = false;
-                    break;
+                    valid = false
+                    break
                 }
-                condition++;
+                condition++
             }
 
             // check if all conditions were satisfied
             if (condition != conditions.size) {
-                valid = false;
+                valid = false
             }
 
             // now check if the boundary conditions are satisfied
@@ -88,12 +92,12 @@ private fun wordMeetsConditionsAt(
             }
             if (bounds.second != null) {
                 if (conditions[0].first - i + word.length > bounds.second!!) {
-                    valid = false;
+                    valid = false
                 }
             }
 
             if (valid) {
-                return conditions[0].first - i;
+                return conditions[0].first - i
             }
         }
     }
@@ -103,7 +107,8 @@ private fun wordMeetsConditionsAt(
 fun findLongestWord(
     wordMap: ProcessedWordMap,
     input: String,
-    conditions: MutableList<Pair<Int, Char>> = mutableListOf()
+    conditions: MutableList<Pair<Int, Char>> = mutableListOf(),
+    exclude: Set<String> = mutableSetOf()
 ): Pair<String, Int> {
 
 
@@ -129,13 +134,14 @@ fun findLongestWord(
 
         // if there are no conditions, simply return
         if (wordMap.processedWordMap().containsKey(current)) {
-            if (conditions.isEmpty()) {
-                return Pair(wordMap.processedWordMap()[current]?.get(0)!!, 0)
+            val result = Pair(wordMap.processedWordMap()[current]?.get(0)!!, 0)
+            if (conditions.isEmpty() && !exclude.contains(result.first)) {
+                return result
             }
         }
 
         // slowly relax constraints from the ends
-        val result = relax(wordMap, current, conditions)
+        val result = relax(wordMap, current, conditions, exclude)
         if (result.first != null) return Pair(result.first!!, result.second)
 
         // only if no condition can be met, then relax use fewer tiles
